@@ -11,6 +11,7 @@ import json
 import hashlib
 import requests
 from urllib.parse import urlparse
+import ssl
 
 MINING_SENDER = 'The Blockchain'
 MINING_REWARD = 1
@@ -94,7 +95,10 @@ class Blockchain:
         new_chain = None
         max_length = len(self.chain)
         for node in neighbours:
-            response = requests.get('https://'+node+'/chain')
+            print(node)
+
+            response = requests.get('http://127.0.0.1:'+node+'/chain')
+            print('response',response)
             if response.status_code == 200:
                 length = response.json()['length']
                 chain = response.json()['chain']
@@ -180,6 +184,23 @@ def mine():
     }
     return jsonify(response), 200
 
+@app.route("/nodes/resolve", methods=['GET'])
+@cross_origin()
+def consensus():
+    replaced = blockchain.resolve_conflicts()
+    print(replaced)
+    if replaced:
+        response = {
+            'message':'Our blockchain was replaced',
+            'new_chain':blockchain.chain
+        }
+    else:
+        response = {
+            'message': 'Our blockchain is authoratative',
+            'new_chain': blockchain.chain
+        }
+    return jsonify(response), 200
+
 @app.route("/transactions/new", methods=['POST'])
 @cross_origin()
 def new_transaction():
@@ -229,5 +250,5 @@ if __name__ == '__main__':
     parser.add_argument('-p','--port',default=5001,type=int,help="port to listen to")
     args = parser.parse_args()
     port = args.port
-    app.run(ssl_context='adhoc', host='127.0.0.1', port=port, debug=True)
-    # app.run(host='127.0.0.1',port=port,debug=True)
+    # app.run(ssl_context='adhoc', host='127.0.0.1', port=port, debug=True)
+    app.run(host='127.0.0.1',port=port,debug=True)

@@ -94,7 +94,7 @@
                 success: function(response){
                     let nodes = '';
                     for(i=0;i<response['nodes'].length;i++){
-                        node = "<li><a href=https://127.0.0.1:"+ response['nodes'][i] + ">" + "127.0.0.1:"+response['nodes'][i] + "</a></li>";
+                        node = "<li><a href=http://127.0.0.1:"+ response['nodes'][i] + ">" + "127.0.0.1:"+response['nodes'][i] + "</a></li>";
                         document.getElementById('list_nodes').innerHTML += node;
                     }
                 },

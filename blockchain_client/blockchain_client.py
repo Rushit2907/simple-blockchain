@@ -73,5 +73,5 @@ if __name__ == '__main__':
     parser.add_argument('-p','--port',default=8081,type=int,help="port to listen to")
     args = parser.parse_args()
     port = args.port
-    app.run(ssl_context='adhoc',host='127.0.0.1',port=port,debug=True)
-    # app.run(host='127.0.0.1',port=port,debug=True)
+    # app.run(ssl_context='adhoc',host='127.0.0.1',port=port,debug=True)
+    app.run(host='127.0.0.1',port=port,debug=True)

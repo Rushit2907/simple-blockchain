@@ -178,6 +178,7 @@
                $.ajax({
                     url:'/nodes/resolve',
                     type:'GET',
+                    headers: {'Access-Control-Allow-Origin' :'*'},
                     success:function(response){
                         window.location.reload();
                     },
